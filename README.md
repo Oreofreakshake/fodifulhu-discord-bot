@@ -4,4 +4,3 @@
 
 ###### https://discord.gg/Q6djyXG <- lets build it together
 
-###### .help to view the bot features and progress
