@@ -8,6 +8,7 @@ from pathlib import Path
 import platform
 import json
 from datetime import datetime
+from discord.ext.commands.errors import CommandOnCooldown
 
 from discord.flags import alias_flag_value
 
@@ -34,6 +35,33 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game(name=f"use . to interact with me"))
 
 
+@bot.event
+async def on_command_error(ctx, error):
+    ignored = (commands.CommandNotFound, commands.UserInputError)
+    if isinstance(error, ignored):
+        return
+
+    if isinstance(error, CommandOnCooldown):
+        m, s = divmod(error.retry_after, 60)
+        h, m = divmod(m, 60)
+
+        if int(h) is 0 and int(m) is 0:
+            await ctx.send(f"you must wait {int(s)} seconds to use this command!")
+        elif int(h) is 0 and int(m) is not 0:
+            await ctx.send(
+                f"you must wait {int(m)} minutes, {int(s)} seconds to use this command!"
+            )
+        else:
+            await ctx.send(
+                f"you must wait {int(h)}hours, {int(m)} minutes, {int(s)} seconds to use this command!"
+            )
+    elif isinstance(error, commands.CheckAnyFailure):
+        await ctx.send(
+            "I don't understand what you mean, can you refer to the help command"
+        )
+    raise error
+
+
 @bot.command(name="hi", aliases=["hello"])
 async def _hi(ctx):
     await ctx.send(f"Hi {ctx.author.mention}!")
@@ -54,7 +82,7 @@ async def stats(ctx):
 
     embed = Embed(
         title="myStatus",
-        descrition="------------",
+        descrition="\uFEFF",
         colour=0xBF8040,
         timestamp=datetime.utcnow(),
     )
@@ -68,12 +96,13 @@ async def stats(ctx):
     for name, value, inline in fields:
         embed.add_field(name=name, value=value, inline=inline)
     embed.set_footer(text="Online since: ")
+    embed.set_author(name=bot.user.name, icon_url=bot.user.avatar_url)
 
     await ctx.send(embed=embed)
 
 
 @stats.error
-async def status_error(ctx, error):
+async def stats_error(ctx, error):
     if isinstance(error, commands.CheckFailure):
         await ctx.send(f"you dont have permission, idiot{ctx.author.mention}")
 
@@ -91,6 +120,13 @@ async def logout_error(ctx, error):
         await ctx.send(f"you dont have the permission, idiot {ctx.author.mention}")
     else:
         raise error
+
+
+@bot.command()
+async def say(ctx, *, message=None):
+    message = message or "refer to the help command, I don't understand what you mean"
+    await ctx.message.delete()
+    await ctx.send(f"`{message}`")
 
 
 bot.run(bot.config_token)
