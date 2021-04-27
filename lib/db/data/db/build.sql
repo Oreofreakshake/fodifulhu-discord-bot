@@ -1,6 +1,0 @@
-CREATE TABLE IF NOT EXISTS exp (
-    UserID integer PRIMARY KEY,
-    XP integer DEFAULT 0,
-    LEV integer DEFAULT 0,
-    XPLOCK text DEFAULT CURRENT_TIMESTAMP
-);
