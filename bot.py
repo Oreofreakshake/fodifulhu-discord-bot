@@ -1,3 +1,4 @@
+import re
 import discord
 from discord import activity
 from discord import member
@@ -8,7 +9,8 @@ from pathlib import Path
 import platform
 import json
 from datetime import datetime
-from discord.ext.commands.errors import CommandOnCooldown
+from discord.ext.commands.errors import CheckFailure, CommandOnCooldown
+import json
 
 from discord.flags import alias_flag_value
 
@@ -20,10 +22,14 @@ print(f"{cwd}\n------")
 secrete_file = json.load(open(cwd + "/bot_config/secrets.json"))
 
 bot = commands.Bot(
-    command_prefix=".", case_insenstive=True, owner_id="442629841716772864"
+    command_prefix=commands.when_mentioned_or("."),
+    case_insenstive=True,
+    owner_id=442629841716772864,
 )
 bot.config_token = secrete_file["token"]
 logging.basicConfig(level=logging.INFO)
+
+bot.version = "0.0.5"
 
 bot.blacklisted_users = []
 
@@ -35,6 +41,9 @@ async def on_ready():
             bot.user.name, bot.user.id
         )
     )
+
+    data = read_json(bot.blacklisted_users, filename="blacklist")
+    bot.blacklisted_users = data["blacklistedUsers"]
 
     await bot.change_presence(activity=discord.Game(name=f"use . to interact with me"))
 
@@ -66,8 +75,46 @@ async def on_command_error(ctx, error):
     raise error
 
 
+@bot.command()
+@commands.is_owner()
+async def blacklist(ctx, user: discord.Member):
+    if ctx.message.author.id == user.id:
+        await ctx.send("`bruh, you can't blacklist yourself`")
+        return
+
+    bot.blacklisted_users.append(user.id)
+    data = read_json(bot.blacklisted_users, "blacklist")
+    data["blacklistedUsers"].append(user.id)
+    write_json(data, "blacklist")
+    await ctx.send(f"`I have blacklisted {user.name} for being an ass `")
+
+
+@blacklist.error
+async def blacklist_error(ctx, error):
+    if isinstance(error, commands.CheckFailure):
+        await ctx.send("`LOL you don't have the power to blacklist anyone, peasant`")
+
+
+@bot.command()
+@commands.is_owner()
+async def unblacklist(ctx, user: discord.Member):
+    bot.blacklisted_users.remove(user.id)
+    data = read_json(bot.blacklisted_users, "blacklist")
+    data["blacklistedUsers"].remove(user.id)
+    write_json(data, "blacklist")
+    await ctx.send(f"`I have removed {user.name} from the blacklist`")
+
+
+@unblacklist.error
+async def unblacklist_error(ctx, error):
+    if isinstance(error, commands.CheckFailure):
+        await ctx.send("`you can't unblacklist if you can't blacklist, dumbass`")
+
+
 @bot.command(name="hi", aliases=["hello"])
 async def _hi(ctx):
+    if ctx.message.author.id in bot.blacklisted_users:
+        return
     await ctx.send(f"Hi {ctx.author.mention}!")
 
 
@@ -128,6 +175,8 @@ async def logout_error(ctx, error):
 
 @bot.command()
 async def say(ctx, *, message=None):
+    if ctx.message.author.id in bot.blacklisted_users:
+        return
     message = message or "refer to the help command, I don't understand what you mean"
     await ctx.message.delete()
     await ctx.send(f"`{message}`")
@@ -135,9 +184,22 @@ async def say(ctx, *, message=None):
 
 @bot.command()
 async def saam(ctx):
+    if ctx.message.author.id in bot.blacklisted_users:
+        return
     await ctx.send(
         "`did you just try to use the saam command? you fucking gay black piece of shit ass hair, go kys`"
     )
+
+
+def read_json(data, filename):
+    with open(f"{cwd}/blacklist_config/{filename}.json", "r") as file:
+        data = json.load(file)
+    return data
+
+
+def write_json(data, filename):
+    with open(f"{cwd}/blacklist_config/{filename}.json", "w") as file:
+        json.dump(data, file, indent=4)
 
 
 bot.run(bot.config_token)
