@@ -19,9 +19,13 @@ print(f"{cwd}\n------")
 
 secrete_file = json.load(open(cwd + "/bot_config/secrets.json"))
 
-bot = commands.Bot(command_prefix=".", case_insenstive=True)
+bot = commands.Bot(
+    command_prefix=".", case_insenstive=True, owner_id="442629841716772864"
+)
 bot.config_token = secrete_file["token"]
 logging.basicConfig(level=logging.INFO)
+
+bot.blacklisted_users = []
 
 
 @bot.event
@@ -45,9 +49,9 @@ async def on_command_error(ctx, error):
         m, s = divmod(error.retry_after, 60)
         h, m = divmod(m, 60)
 
-        if int(h) is 0 and int(m) is 0:
+        if int(h) == 0 and int(m) == 0:
             await ctx.send(f"you must wait {int(s)} seconds to use this command!")
-        elif int(h) is 0 and int(m) is not 0:
+        elif int(h) == 0 and int(m) != 0:
             await ctx.send(
                 f"you must wait {int(m)} minutes, {int(s)} seconds to use this command!"
             )
@@ -127,6 +131,13 @@ async def say(ctx, *, message=None):
     message = message or "refer to the help command, I don't understand what you mean"
     await ctx.message.delete()
     await ctx.send(f"`{message}`")
+
+
+@bot.command()
+async def saam(ctx):
+    await ctx.send(
+        "`did you just try to use the saam command? you fucking gay black piece of shit ass hair, go kys`"
+    )
 
 
 bot.run(bot.config_token)
