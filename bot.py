@@ -44,20 +44,6 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game(name=f"use . to interact with me"))
 
 
-@bot.command(name="hi", aliases=["hello"])
-async def _hi(ctx):
-    if ctx.message.author.id in bot.blacklisted_users:
-        return
-    await ctx.send(f"Hi {ctx.author.menion}!")
-
-
-@bot.command(aliases=["fuckoff", "bye"])
-@commands.is_owner()
-async def logout(ctx):
-    await ctx.send(f"Hey {ctx.author.mention} I'm logging out :wave:")
-    await bot.logout()
-
-
 if __name__ == "__main__":
     for file in os.listdir(cwd + "/cogs"):
         if file.endswith(".py") and not file.startswith("_"):

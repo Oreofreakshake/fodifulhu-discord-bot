@@ -1,9 +1,12 @@
 import discord
+from discord import member
+from discord import mentions
 from discord.ext import commands
 import platform
 import datetime
-
-from discord.ext.commands.core import is_owner
+from discord.ext.commands import bot
+import random
+from discord.ext.commands.core import command, is_owner
 import cogs._json
 
 
@@ -14,6 +17,12 @@ class Commands(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print("Commands Cog has been loaded....\n")
+
+    @commands.command(name="hi", aliases=["hello", "test"])
+    async def test(self, ctx):
+        if ctx.message.author.id in self.bot.blacklisted_users:
+            return
+        await ctx.send(f"yes I am alive {ctx.author.mention}!")
 
     @commands.command()
     @commands.is_owner()
@@ -48,18 +57,24 @@ class Commands(commands.Cog):
 
         await ctx.send(embed=embed)
 
+    @commands.command(aliases=["fuckoff", "bye"])
+    @commands.is_owner()
+    async def logout(self, ctx):
+        await ctx.send(f"Hey {ctx.author.mention} I'm going to sleep :sleeping:")
+        await self.bot.logout()
+
     @commands.command()
     @commands.is_owner()
     async def blacklist(self, ctx, user: discord.Member):
         if ctx.message.author.id == user.id:
-            await ctx.send("`bruh, you can't blacklist yourself`")
+            await ctx.send("```bruh, you can't blacklist yourself```")
             return
 
         self.bot.blacklisted_users.append(user.id)
         data = cogs._json.read_json(self.bot.blacklisted_users, "blacklist")
         data["blacklistedUsers"].append(user.id)
         cogs._json.write_json(data, "blacklist")
-        await ctx.send(f"`I have blacklisted {user.name} for being an ass `")
+        await ctx.send(f"```I have blacklisted {user.name} for being an ass```")
 
     @commands.command()
     @commands.is_owner()
@@ -68,7 +83,7 @@ class Commands(commands.Cog):
         data = cogs._json.read_json(self.bot.blacklisted_users, "blacklist")
         data["blacklistedUsers"].remove(user.id)
         cogs._json.write_json(data, "blacklist")
-        await ctx.send(f"`I have removed {user.name} from the blacklist`")
+        await ctx.send(f"```I have removed {user.name} from the blacklist```")
 
     @commands.command()
     async def say(self, ctx, *, message=None):
@@ -78,15 +93,39 @@ class Commands(commands.Cog):
             message or "refer to the help command, I don't understand what you mean"
         )
         await ctx.message.delete()
-        await ctx.send(f"`{message}`")
+        await ctx.send(f"```{message}```")
 
     @commands.command()
-    async def saam(self, ctx):
+    async def saam(self, ctx, user: discord.Member):
         if ctx.message.author.id in self.bot.blacklisted_users:
             return
+        responses = [
+            " just had rough sex with saam",
+            " sucked saam's dick while he was peeing",
+            " licked saams unshaved 8ball looking ass",
+            " played with saam's ball last night",
+            " ate saam's kess while licking the cum off from saam's black wet dick",
+        ]
+        if ctx.message.author.id == user.id:
+            await ctx.send(
+                "```nigger, why tf you wanna have sex with saam yourself?```"
+            )
+            return
+
+        if not user.bot:
+            await ctx.send(f"{user.mention}{random.choice(responses)}")
+            return
+
         else:
             await ctx.send(
-                "`did you just try to use the saam command? you fucking gay black piece of shit ass hair, go kys`"
+                "```Saam can't fuck with bots you dumb black jew looking fuck```"
+            )
+
+    @saam.error
+    async def saam_error(self, ctx: commands.Context, error: commands.errors) -> None:
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(
+                "```did you just try to use the saam command? you fucking gay black piece of shit ass hair, go kys```"
             )
 
 
