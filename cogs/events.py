@@ -27,6 +27,21 @@ class Events(commands.Cog):
             await channel.send(embed=embed)
 
     @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        channel = discord.utils.get(member.guild.text_channels, name="recording")
+        if channel:
+            embed = discord.Embed(
+                description="bye, nigger",
+                colour=0xBF8040,
+            )
+            embed.set_thumbnail(url=member.avatar_url)
+            embed.set_author(name=member.name, icon_url=member.avatar_url)
+            embed.set_footer(text=member.guild, icon_url=member.guild.icon_url)
+            embed.timestamp = datetime.datetime.utcnow()
+
+            await channel.send(embed=embed)
+
+    @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         ignored = (commands.CommandNotFound, commands.UserInputError)
         if isinstance(error, ignored):
@@ -37,18 +52,20 @@ class Events(commands.Cog):
             h, m = divmod(m, 60)
 
             if int(h) == 0 and int(m) == 0:
-                await ctx.send(f"you must wait {int(s)} seconds to use this command!")
+                await ctx.send(
+                    f"```you must wait {int(s)} seconds to use this command!```"
+                )
             elif int(h) == 0 and int(m) != 0:
                 await ctx.send(
-                    f"you must wait {int(m)} minutes, {int(s)} seconds to use this command!"
+                    f"```you must wait {int(m)} minutes, {int(s)} seconds to use this command!```"
                 )
             else:
                 await ctx.send(
-                    f"you must wait {int(h)}hours, {int(m)} minutes, {int(s)} seconds to use this command!"
+                    f"```you must wait {int(h)}hours, {int(m)} minutes, {int(s)} seconds to use this command!```"
                 )
         elif isinstance(error, commands.CheckAnyFailure):
             await ctx.send(
-                "I don't understand what you mean, can you refer to the help command"
+                "```I don't understand what you mean, can you refer to the help command```"
             )
         raise error
 

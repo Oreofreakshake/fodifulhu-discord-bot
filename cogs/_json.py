@@ -8,14 +8,14 @@ def get_path():
     return cwd
 
 
-def read_json(data, filename):
+def read_json(filename):
     cwd = get_path()
-    with open(cwd + "/blacklist_config/" + filename + ".json", "r") as file:
+    with open(cwd + "/bot_config/" + filename + ".json", "r") as file:
         data = json.load(file)
     return data
 
 
 def write_json(data, filename):
     cwd = get_path()
-    with open(cwd + "/blacklist_config/" + filename + ".json", "w") as file:
+    with open(cwd + "/bot_config/" + filename + ".json", "w") as file:
         json.dump(data, file, indent=4)
