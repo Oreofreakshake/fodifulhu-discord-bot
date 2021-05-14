@@ -1,8 +1,9 @@
 import discord
 from discord import channel
+from discord import message
+from discord import embeds
+from discord import errors
 from discord.ext import commands
-import platform
-import datetime
 
 from discord.ext.commands.core import command
 import cogs._json
@@ -14,56 +15,7 @@ class Moderation(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Moderation Cogs has been loaded....\n")
-
-    @commands.command(aliases=["fuckoff", "bye"])
-    @commands.is_owner()
-    async def logout(self, ctx):
-        await ctx.send(f"Hey {ctx.author.mention} I'm going to sleep :sleeping:")
-        await self.bot.logout()
-
-    @logout.error
-    async def logout_error(self, ctx: commands.Context, error: commands.errors) -> None:
-        if isinstance(error, commands.CheckFailure):
-            await ctx.send("```you dont have the permission, idiot```")
-
-    @commands.command()
-    @commands.is_owner()
-    async def blacklist(self, ctx, user: discord.Member):
-        if ctx.message.author.id == user.id:
-            await ctx.send("```bruh, you can't blacklist yourself```")
-            return
-
-        self.bot.blacklisted_users.append(user.id)
-        data = cogs._json.read_json("blacklist")
-        data["blacklistedUsers"].append(user.id)
-        cogs._json.write_json(data, "blacklist")
-        await ctx.send(f"```I have blacklisted {user.name} for being an ass```")
-
-    @blacklist.error
-    async def blacklist_error(
-        self, ctx: commands.Context, error: commands.errors
-    ) -> None:
-        if isinstance(error, commands.CheckFailure):
-            await ctx.send("```you dont have the power to blacklist people, asshole```")
-
-    @commands.command()
-    @commands.is_owner()
-    async def unblacklist(self, ctx, user: discord.Member):
-        self.bot.blacklisted_users.remove(user.id)
-        data = cogs._json.read_json("blacklist")
-        data["blacklistedUsers"].remove(user.id)
-        cogs._json.write_json(data, "blacklist")
-        await ctx.send(f"```I have removed {user.name} from the blacklist```")
-
-    @unblacklist.error
-    async def unblacklist_error(
-        self, ctx: commands.Context, error: commands.errors
-    ) -> None:
-        if isinstance(error, commands.CheckFailure):
-            await ctx.send(
-                "```nigga, if you can't blacklist, what made you think you can unblacklist```"
-            )
+        print("Moderation Cog has been loaded....\n")
 
     @commands.command()
     @commands.has_permissions(administrator=True)
@@ -146,6 +98,26 @@ class Moderation(commands.Cog):
             await ctx.send(
                 "```if you can't ban niggers then you obviously can't unban niggers, dumbass```"
             )
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    async def cls(self, ctx, amount=15):
+        await ctx.channel.purge(limit=amount + 1)
+        channel = self.bot.get_channel(ctx.channel.id)
+
+        embed = discord.Embed(
+            title=f"{ctx.author.name} cleared: {ctx.channel.name}",
+            description=f"{amount} messages were deleted",
+            colour=0xBF8040,
+        )
+
+        await channel.send(embed=embed)
+
+    @cls.error
+    async def cls_error(self, ctx: commands.Context, error: commands.errors) -> None:
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("```delete your own messages, lazy gay looking fuck ```")
 
 
 def setup(bot):
