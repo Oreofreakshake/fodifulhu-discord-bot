@@ -50,7 +50,7 @@ async def on_ready():
         )
     )
 
-    await bot.change_presence(activity=discord.Game(name=f"use . to interact with me"))
+    await bot.change_presence(activity=discord.Game(name=f"with your mom"))
 
 
 @bot.event

@@ -47,7 +47,9 @@ class Channel(commands.Cog):
     @commands.has_guild_permissions(administrator=True)
     @commands.bot_has_guild_permissions(manage_channels=True)
     async def new(self, ctx):
-        await ctx.send("i dont understand tf you trying to say, retard, try .help new")
+        await ctx.send(
+            "i dont understand tf you trying to say, retard, try <prefix>help new"
+        )
 
     @new.command()
     @commands.guild_only()

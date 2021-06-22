@@ -42,7 +42,7 @@ class Moderation(commands.Cog):
             channel = self.bot.get_channel(841805435698020373)
             embed = discord.Embed(
                 title=f"{ctx.author.name} kicked: {member.name}",
-                description=reason,
+                description="`reason: `" + reason,
                 colour=0xBF8040,
             )
             await channel.send(embed=embed)
@@ -54,9 +54,19 @@ class Moderation(commands.Cog):
                 "```really nigger? you don't have the balls to kick anyone, fag```"
             )
 
-    @commands.command()
+    @commands.group(invoke_without_command=True)
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
+    @commands.bot_has_guild_permissions(administrator=True)
+    async def canyou(self, ctx):
+        await ctx.send(
+            f"```Can I what? be specific retard, refer to <prefix>help canyou ```"
+        )
+
+    @canyou.command()
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    @commands.bot_has_guild_permissions(administrator=True)
     async def ban(self, ctx, member: discord.Member, *, reason=None):
         await ctx.guild.ban(user=member, reason=reason)
         await ctx.send("```banned that motherfucker```")
@@ -64,7 +74,7 @@ class Moderation(commands.Cog):
         channel = self.bot.get_channel(841805435698020373)
         embed = discord.Embed(
             title=f"{ctx.author.name} banned: {member.name}",
-            description=reason,
+            description="`reason: `" + reason,
             colour=0xBF8040,
         )
         await channel.send(embed=embed)
@@ -76,9 +86,10 @@ class Moderation(commands.Cog):
                 "```really nigger? you don't have the balls to ban anyone, fag```"
             )
 
-    @commands.command()
+    @canyou.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
+    @commands.bot_has_guild_permissions(administrator=True)
     async def unban(self, ctx, member, *, reason=None):
         member = await self.bot.fetch_user(int(member))
         await ctx.guild.unban(member, reason=reason)
@@ -87,7 +98,7 @@ class Moderation(commands.Cog):
         channel = self.bot.get_channel(841805435698020373)
         embed = discord.Embed(
             title=f"{ctx.author.name} unbanned: {member.name}",
-            description=reason,
+            description="`reason: `" + reason,
             colour=0xBF8040,
         )
         await channel.send(embed=embed)
