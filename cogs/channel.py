@@ -78,7 +78,7 @@ class Channel(commands.Cog):
         }
         channel = await ctx.guild.create_text_channel(name=name, overwrites=overwrites)
         await ctx.send(
-            f"```I made a new category called {channel.name} for you lazy fucker```"
+            f"```I made a new channel called {channel.name} for you lazy fucker```"
         )
 
     @commands.command()

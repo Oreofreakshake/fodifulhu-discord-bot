@@ -28,10 +28,13 @@ def get_prefix(bot, messgae):
 
 secrete_file = json.load(open(cwd + "/bot_config/secrets.json"))
 
+intents = discord.Intents().all()
+
 bot = commands.Bot(
     command_prefix=get_prefix,
     case_insenstive=True,
     owner_id=442629841716772864,
+    intents=intents,
 )
 bot.config_token = secrete_file["token"]
 logging.basicConfig(level=logging.INFO)

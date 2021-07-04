@@ -5,6 +5,8 @@ from discord.ext import commands
 import random
 import datetime
 
+from requests.models import Response
+
 
 class Events(commands.Cog):
     def __init__(self, bot):
@@ -16,30 +18,47 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        channel = discord.utils.get(member.guild.text_channels, name="recording")
-        if channel:
-            embed = discord.Embed(decription="Welcome to boakibaa", colour=0xBF8040)
-            embed.set_thumbnail(url=member.avatar_url)
-            embed.set_author(name=member.name, icon_url=member.avatar_url)
-            embed.set_footer(text=member.guild, icon_url=member.guild.icon_url)
-            embed.timestamp = datetime.datetime.utcnow()
+        channel = self.bot.get_channel(585411891447463956)
 
-            await channel.send(embed=embed)
+        response = [
+            f"Hopefully you wont regret joining {member.name}",
+            f"this is pretty much a really dead ass server but welcome {member.name}",
+            f"Enjoy the stay nigger {member.name}, oh did you get offended?",
+            f"This isnt a faggot server, i think, welcome {member.name}",
+            f"I am not the admin bot, im just very racist, hope you enjoy the stay {member.name}",
+            f"Retarded server but ok, have some fun {member.name}",
+            f"Oh i didnt notice you there, {member.name}, JK i did, dw im not your dad",
+        ]
+
+        embed = discord.Embed(description=(random.choice(response)), colour=0xBF8040)
+        embed.set_thumbnail(url=member.avatar_url)
+        embed.set_author(name=member.name, icon_url=member.avatar_url)
+        embed.set_footer(text=member.guild, icon_url=member.guild.icon_url)
+        embed.timestamp = datetime.datetime.utcnow()
+        await channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        channel = discord.utils.get(member.guild.text_channels, name="recording")
-        if channel:
-            embed = discord.Embed(
-                description="bye, nigger",
-                colour=0xBF8040,
-            )
-            embed.set_thumbnail(url=member.avatar_url)
-            embed.set_author(name=member.name, icon_url=member.avatar_url)
-            embed.set_footer(text=member.guild, icon_url=member.guild.icon_url)
-            embed.timestamp = datetime.datetime.utcnow()
 
-            await channel.send(embed=embed)
+        channel = self.bot.get_channel(585411891447463956)
+
+        response = [
+            f"faggot, fuck off {member.name}",
+            f"no one really wanted you to stay here anyway {member.name}",
+            f"got offended and left to cry?, {member.name}",
+            f"aw you didnt get personal suck jobs from saam? lgbtq+ nigger",
+            f"gay ass nigger {member.name}" f"thank god {member.name} left",
+            f"{member.name} was a pain in the asshole, thank god that nigger left",
+        ]
+        embed = discord.Embed(
+            description=(random.choice(response)),
+            colour=0xBF8040,
+        )
+        embed.set_thumbnail(url=member.avatar_url)
+        embed.set_author(name=member.name, icon_url=member.avatar_url)
+        embed.set_footer(text=member.guild, icon_url=member.guild.icon_url)
+        embed.timestamp = datetime.datetime.utcnow()
+        await channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
