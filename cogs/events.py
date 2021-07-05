@@ -47,7 +47,7 @@ class Events(commands.Cog):
             f"no one really wanted you to stay here anyway {member.name}",
             f"got offended and left to cry?, {member.name}",
             f"aw you didnt get personal suck jobs from saam? lgbtq+ nigger",
-            f"gay ass nigger {member.name}" f"thank god {member.name} left",
+            f"gay ass nigger {member.name} " f"{member.name} left",
             f"{member.name} was a pain in the asshole, thank god that nigger left",
         ]
         embed = discord.Embed(
