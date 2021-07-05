@@ -10,6 +10,7 @@ import logging
 from pathlib import Path
 import json
 import cogs._json
+from dotenv import load_dotenv
 
 from discord.flags import alias_flag_value
 
@@ -26,8 +27,6 @@ def get_prefix(bot, messgae):
     return commands.when_mentioned_or(data[str(messgae.guild.id)])(bot, messgae)
 
 
-secrete_file = json.load(open(cwd + "/bot_config/secrets.json"))
-
 intents = discord.Intents().all()
 
 bot = commands.Bot(
@@ -36,7 +35,6 @@ bot = commands.Bot(
     owner_id=442629841716772864,
     intents=intents,
 )
-bot.config_token = secrete_file["token"]
 logging.basicConfig(level=logging.INFO)
 
 bot.version = "6"
@@ -75,8 +73,11 @@ async def on_message(message):
 
 
 if __name__ == "__main__":
-    for file in os.listdir(cwd + "/cogs"):
-        if file.endswith(".py") and not file.startswith("_"):
-            bot.load_extension(f"cogs.{file[:-3]}")
-
-    bot.run(bot.config_token)
+    try:
+        for file in os.listdir(cwd + "/cogs"):
+            if file.endswith(".py") and not file.startswith("_"):
+                bot.load_extension(f"cogs.{file[:-3]}")
+        load_dotenv()
+        bot.run(os.getenv("TOKEN"))
+    except:
+        print("runtime error")
