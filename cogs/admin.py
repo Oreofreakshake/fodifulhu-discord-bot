@@ -51,7 +51,7 @@ class Moderation(commands.Cog):
     async def kick_error(self, ctx: commands.Context, error: commands.errors) -> None:
         if isinstance(error, commands.MissingPermissions):
             await ctx.send(
-                "```really nigger? you don't have the balls to kick anyone, fag```"
+                "```really dude? you don't have the balls to kick anyone```"
             )
 
     @commands.group(invoke_without_command=True)
@@ -60,7 +60,7 @@ class Moderation(commands.Cog):
     @commands.bot_has_guild_permissions(administrator=True)
     async def canyou(self, ctx):
         await ctx.send(
-            f"```Can I what? be specific retard, refer to <prefix>help canyou ```"
+            f"```Can I what? be specific dumbass, refer to <prefix>help canyou ```"
         )
 
     @canyou.command()
@@ -83,7 +83,7 @@ class Moderation(commands.Cog):
     async def ban_error(self, ctx: commands.Context, error: commands.errors) -> None:
         if isinstance(error, commands.MissingPermissions):
             await ctx.send(
-                "```really nigger? you don't have the balls to ban anyone, fag```"
+                "```really dude? you don't have the balls to ban anyone```"
             )
 
     @canyou.command()
@@ -107,7 +107,7 @@ class Moderation(commands.Cog):
     async def unban_error(self, ctx: commands.Context, error: commands.errors) -> None:
         if isinstance(error, commands.MissingPermissions):
             await ctx.send(
-                "```if you can't ban niggers then you obviously can't unban niggers, dumbass```"
+                "```if you can't ban anyone then you obviously can't unban anyone, dumbass```"
             )
 
     @commands.command()
@@ -128,7 +128,7 @@ class Moderation(commands.Cog):
     @cls.error
     async def cls_error(self, ctx: commands.Context, error: commands.errors) -> None:
         if isinstance(error, commands.MissingPermissions):
-            await ctx.send("```delete your own messages, lazy gay looking fuck ```")
+            await ctx.send("```delete your own messages, lazy fuck ```")
 
 
 def setup(bot):
