@@ -67,7 +67,7 @@ async def on_message(message):
             prefix = data[str(message.guild.id)]
         else:
             prefix = "."
-        prefixMsg = await message.channel.send(f"```retard my prefix is {prefix}```")
+        prefixMsg = await message.channel.send(f"```dumbass my prefix is {prefix}```")
         await prefixMsg.add_reaction("🖕")
 
     await bot.process_commands(message)
