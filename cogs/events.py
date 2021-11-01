@@ -23,9 +23,9 @@ class Events(commands.Cog):
         response = [
             f"Hopefully you wont regret joining {member.name}",
             f"this is pretty much a really dead ass server but welcome {member.name}",
-            f"Enjoy the stay nigger {member.name}, oh did you get offended?",
-            f"This isnt a faggot server, i think, welcome {member.name}",
-            f"I am not the admin bot, im just very racist, hope you enjoy the stay {member.name}",
+            f"Enjoy the stay {member.name}",
+            f"This isnt a server for you if you easily can get offended, but welcome {member.name}",
+            f"I am not the admin bot, im just very based, hope you enjoy the stay {member.name}",
             f"Retarded server but ok, have some fun {member.name}",
             f"Oh i didnt notice you there, {member.name}, JK i did, dw im not your dad",
         ]
@@ -43,12 +43,12 @@ class Events(commands.Cog):
         channel = self.bot.get_channel(585411891447463956)
 
         response = [
-            f"faggot, fuck off {member.name}",
+            f"lol, pussy {member.name}",
             f"no one really wanted you to stay here anyway {member.name}",
             f"got offended and left to cry?, {member.name}",
-            f"aw you didnt get personal suck jobs from saam? lgbtq+ nigger",
-            f"gay ass nigger {member.name} " f"{member.name} left",
-            f"{member.name} was a pain in the asshole, thank god that nigger left",
+            f"aw you didnt get personal suck jobs from saam? lgbtq+ ass",
+            f"some corny dude aka, {member.name} left",
+            f"{member.name} was a pain in the asshole anyway",
         ]
         embed = discord.Embed(
             description=(random.choice(response)),
