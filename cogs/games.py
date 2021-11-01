@@ -29,7 +29,7 @@ class Games(commands.Cog):
 
         if user.mention == "<@!484029862474940426>":
             await ctx.send(
-                f"```saam obviously is the glorious black ass nigger saam```"
+                f"```saam obviously is the glorious saam```"
             )
         else:
             await ctx.send(f"{user.mention} is {rand}% saam")
