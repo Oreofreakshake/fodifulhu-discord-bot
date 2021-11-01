@@ -58,7 +58,7 @@ class OwnerCommands(commands.Cog):
     ) -> None:
         if isinstance(error, commands.CheckFailure):
             await ctx.send(
-                "```nigga, if you can't blacklist, what made you think you can unblacklist```"
+                "```if you can't blacklist, what made you think you can unblacklist, dumbass```"
             )
 
 
