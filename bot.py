@@ -11,7 +11,7 @@ from pathlib import Path
 import json
 import cogs._json
 
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 
 from discord.flags import alias_flag_value
 
@@ -78,8 +78,7 @@ if __name__ == "__main__":
         for file in os.listdir(cwd + "/cogs"):
             if file.endswith(".py") and not file.startswith("_"):
                 bot.load_extension(f"cogs.{file[:-3]}")
-        # load_dotenv()
-        # bot.run(os.getenv("TOKEN"))
-        bot.run("Nzc3NTYyODgyMjQwOTM4MDE1.X7FP3Q.QfjDpzPCdsAXixmGDlWlf9JvgDY")
+        load_dotenv()
+        bot.run(os.getenv("TOKEN"))
     except:
         print("runtime error")
