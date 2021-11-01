@@ -68,7 +68,7 @@ class Commands(commands.Cog):
     async def say(self, ctx, *, message=None):
         if ctx.message.author.id in self.bot.blacklisted_users:
             return
-        message = message or "nigger, say something or check the help command, dumbass"
+        message = message or "say something or check the help command, dumbass"
         await ctx.message.delete()
         await ctx.send(f"```{message}```")
 
@@ -87,7 +87,7 @@ class Commands(commands.Cog):
         ]
         if ctx.message.author.id == user.id:
             await ctx.send(
-                "```nigger, why tf you wanna have sex with saam yourself?```"
+                "```why tf you wanna have sex with saam yourself?```"
             )
             return
 
@@ -112,7 +112,7 @@ class Commands(commands.Cog):
         ping_value = round(self.bot.latency * 1000)
         if ping_value <= 100:
             await ctx.send(
-                f"```damn nigger, my internet speed is kinda epic -> {ping_value}ms```"
+                f"```damn, my internet speed is kinda epic -> {ping_value}ms```"
             )
         else:
             await ctx.send(f"```fuck this shit, slow ass internet -> {ping_value}ms```")
